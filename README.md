@@ -78,4 +78,5 @@
 <p>MIT License</p>
 <hr/>
 <h2>👨&zwj;💻 Author</h2>
-<p>Paweł Nosko</p>
+<p><a href="https://www.designcart.pl/pawel-nosko.html">Paweł Nosko</a></p>
+<p>Project article: <a href="https://pawelnosko.com/php-backend/3ddrawing-a-lightweight-php-library-for-technical-solid-drawings">3Ddrawing &mdash; a lightweight PHP library for technical solid drawings</a> 🚀</p>
