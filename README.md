@@ -1,104 +1,81 @@
-# 3Ddrawing
-
-Biblioteka PHP do generowania **prostych rysunków technicznych 3D** (rzut izometryczny) jako **SVG**.
-
-**Autor:** Paweł Nosko  
-**Wymagania:** PHP 8.1+
-
-## Instalacja
-
-```bash
-cd /var/www/html/3Ddrawing
-composer install
-```
-
-## Szybki start
-
-```php
-<?php
-require 'vendor/autoload.php';
-
-use Drawing3D\Drawing3D;
-use Drawing3D\Building\GarageDrawer;
-
-$drawing = Drawing3D::create(900, 650);
-$drawing->fitToModel($drawing->boxCorners(0, 0, 0, 600, 400, 320));
-
-(new GarageDrawer($drawing))->draw(
-    size: ['width' => 600, 'depth' => 400, 'height' => 250],
-    roof: ['rise' => 70],
-    door: ['x' => 180, 'z' => 0, 'width' => 240, 'height' => 220],
-);
-
-file_put_contents('garaz.svg', $drawing->toSvg());
-// lub: echo $drawing->toHtml('Mój garaż');
-```
-
-## Przykłady
-
-Uruchom lokalny serwer PHP:
-
-```bash
-php -S localhost:8080 -t examples
-```
-
-Otwórz: [http://localhost:8080/](http://localhost:8080/) — lista 10 przykładów.
-
-| Plik | Opis |
-|------|------|
-| `01-simple-box.php` | Prostopadłościan i wymiary |
-| `02-simple-garage.php` | Garaż jednospadowy |
-| `03-dual-slope-garage.php` | Garaż dwuspadowy |
-| `04-simple-house.php` | Prosty domek |
-| `05-shed-wychodek.php` | Wychodek |
-| `06-garage-asymmetric-roof.php` | Garaż z różnym spadem lewo/prawo |
-| `07-carport.php` | Wiata samochodowa |
-| `08-barn.php` | Stodoła |
-| `09-l-shape-building.php` | Budynek L |
-| `10-workshop.php` | Warsztat |
-
-## Struktura projektu
-
-```
-src/
-  Drawing3D.php           # Główne API (line3D, box3D, wymiary)
-  Math/Vector3.php
-  Projection/             # Rzut izometryczny
-  Canvas/SvgCanvas.php    # Bufor SVG
-  Style/StrokeStyle.php
-  Dimension/              # Wymiary na elewacji
-  Building/               # Gotowe szkice budynków
-examples/                 # 10 demonstracji
-docs/API.md               # Dokumentacja API
-```
-
-## Wymiary ze strzałkami
-
-```php
-$drawing->arrowDimension([0, 0, 0], [600, 0, 0], 'Szerokość: 600 cm', offset: 50, extensions: true);
-```
-
-Szczegóły: [docs/API.md](docs/API.md#arrowdimension--wymiary-ze-strzałkami).
-
-## Klasy budynków
-
-- `GarageDrawer` — garaż (jedno- i dwuspadowy, asymetryczny spad)
-- `HouseDrawer` — domek
-- `ShedDrawer` — wychodek
-- `CarportDrawer` — wiata
-- `BarnDrawer` — stodoła
-- `LShapeDrawer` — budynek L
-- `WorkshopDrawer` — warsztat
-- `GreenhouseDrawer` — szklarnia (do własnych kompozycji)
-
-## Jednostki
-
-Współrzędne modelu są w **dowolnych jednostkach** (np. mm). Biblioteka nie konwertuje jednostek — podajesz spójne wartości, a `fitToModel()` dopasowuje skalę do rozmiaru SVG.
-
-## Licencja
-
-MIT — zobacz [LICENSE](LICENSE).
-
-## Dokumentacja
-
-Szczegółowe API: [docs/API.md](docs/API.md).
+<h1>3Ddrawing &mdash; Lightweight PHP Library for Technical 3D Drawings</h1>
+<p><strong>3Ddrawing</strong> is a lightweight PHP library for generating isometric technical drawings of simple 3D structures and buildings in SVG format. It was created to solve a practical problem: quickly generating clean technical sketches for garages, sheds, houses, and similar constructions without using heavy CAD software or browser-based WebGL engines.</p>
+<p>The library works entirely on the server side and allows developers to generate drawings dynamically from form data or database values such as width, depth, height, roof slope, doors, and windows.</p>
+<hr/>
+<h2>✨ Features</h2>
+<ul>
+<li>Generate isometric SVG technical drawings</li>
+<li>Draw 3D boxes and building structures</li>
+<li>Support for mono-pitch and asymmetric roofs</li>
+<li>Add doors, windows, and gates</li>
+<li>Automatic dimension arrows and labels</li>
+<li>Export as SVG or standalone HTML</li>
+<li>Easy PDF integration</li>
+<li>No client-side JavaScript required</li>
+<li>Lightweight architecture with pure PHP</li>
+</ul>
+<p>Perfect for:</p>
+<ul>
+<li>product configurators,</li>
+<li>quotation systems,</li>
+<li>technical documentation,</li>
+<li>PDF offer generators,</li>
+<li>garage and building visualization tools.</li>
+</ul>
+<hr/>
+<h2>🛠 Technology Stack</h2>
+<p>3Ddrawing is built with modern PHP 8.1+ and uses:</p>
+<ul>
+<li>PSR-4 Composer autoloading,</li>
+<li>SVG as the output format,</li>
+<li>custom 3D &rarr; 2D isometric projection math,</li>
+<li>pure PHP without external graphics libraries.</li>
+</ul>
+<p>Because of its simplicity, the library can run on almost any standard PHP hosting environment.</p>
+<hr/>
+<h2>📦 Main Components</h2>
+<p>The library provides a simple API for drawing:</p>
+<pre><code>$drawing-&gt;line3D();<br/>$drawing-&gt;box3D();<br/>$drawing-&gt;face3D();<br/>$drawing-&gt;text3D();<br/>$drawing-&gt;arrowDimension();</code></pre>
+<p>Included building helpers:</p>
+<ul>
+<li><code>GarageDrawer</code></li>
+<li><code>HouseDrawer</code></li>
+<li><code>BarnDrawer</code></li>
+<li><code>WorkshopDrawer</code></li>
+<li><code>GreenhouseDrawer</code></li>
+</ul>
+<hr/>
+<h2>📐 Automatic Dimensions</h2>
+<p>Generate technical dimensions with arrows and labels:</p>
+<pre><code>$drawing-&gt;arrowDimension(<br/> [0, 0, 0],<br/> [600, 0, 0],<br/> 'Width: 600 cm'<br/>);</code></pre>
+<hr/>
+<h2>🏠 Example &mdash; Garage Drawing</h2>
+<pre><code>(new GarageDrawer($drawing))-&gt;draw(<br/> size: ['width' =&gt; 600, 'depth' =&gt; 400, 'height' =&gt; 250],<br/> roof: ['rise' =&gt; 70],<br/> door: ['x' =&gt; 180, 'z' =&gt; 0, 'width' =&gt; 240, 'height' =&gt; 220],<br/>);</code></pre>
+<hr/>
+<h2>📄 PDF Integration</h2>
+<p>The library itself generates SVG or HTML output, which can be embedded into:</p>
+<ul>
+<li>Dompdf,</li>
+<li>wkhtmltopdf,</li>
+<li>mPDF,</li>
+<li>Inkscape pipelines,</li>
+<li>custom document generators.</li>
+</ul>
+<p>This makes it ideal for automatically generating professional offers and technical attachments.</p>
+<hr/>
+<h2>⚠ Limitations</h2>
+<p>3Ddrawing intentionally stays lightweight and simple, so it has some limitations:</p>
+<ul>
+<li>isometric projection only,</li>
+<li>no hidden-edge removal,</li>
+<li>not a full CAD replacement,</li>
+<li>no photorealistic rendering,</li>
+<li>no interactive 3D camera rotation.</li>
+</ul>
+<p>However, it is highly effective for fast technical visualization workflows and business-oriented document generation.</p>
+<hr/>
+<h2>📄 License</h2>
+<p>MIT License</p>
+<hr/>
+<h2>👨&zwj;💻 Author</h2>
+<p>Paweł Nosko</p>
