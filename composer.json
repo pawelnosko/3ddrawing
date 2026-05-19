@@ -1,0 +1,20 @@
+{
+    "name": "pawel-nosko/3ddrawing",
+    "description": "Biblioteka PHP do prostych rysunków technicznych 3D (izometria) generowanych jako SVG",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Paweł Nosko",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Drawing3D\\": "src/"
+        }
+    }
+}
